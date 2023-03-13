@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Fichiers sources">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Fichiers d%27en-tête">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Fichiers de ressources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Fichiers sources\cppflow">
+      <UniqueIdentifier>{c9448eef-b6d0-43da-9aa6-6aea4bd44bb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\models">
+      <UniqueIdentifier>{f67a17a2-ea18-495f-938d-5f3cf3db76e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Fichiers sources\models\regular">
+      <UniqueIdentifier>{7a65d54c-d9d0-4fe8-b0a3-68938f90a441}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="cppflow\context.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\cppflow.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\datatype.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\defer.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\model.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\ops.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\raw_ops.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+    <ClInclude Include="cppflow\tensor.h">
+      <Filter>Fichiers sources\cppflow</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="models\regular\saved_model.pb">
+      <Filter>Fichiers sources\models\regular</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="input.png">
+      <Filter>Fichiers sources</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
