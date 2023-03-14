@@ -31,12 +31,12 @@ int test() {
         return 1;
     }
 
-    // int n_ops = 700;
-    // for (int i = 0; i < n_ops; i++)
-    // {
-    //     size_t pos = i;
-    //     std::cout << "Input: " << TF_OperationName(TF_GraphNextOperation(graph, &pos)) << "\n";
-    // }
+     /*int n_ops = 5000;
+     for (int i = 0; i < n_ops; i++)
+     {
+         size_t pos = i;
+         std::cout << "Input: " << TF_OperationName(TF_GraphNextOperation(graph, &pos)) << "\n";
+     }*/
 
     // Récupération du nom des entrées et des sorties
     const int num_inputs = 1; // TF_GraphNumInputs(graph);
@@ -138,13 +138,14 @@ cv::Mat normalizeImage(const cv::Mat& input) {
 }
 
 int main() {
-    // return test(); // test using Tensorflow for C (crashing when running the model)
+     //return test(); // test using Tensorflow for C (crashing when running the model)
 
     // Read the graph
     cppflow::model model("models/regular");
+    //cppflow::model model("models/realesrgan-x4");
 
     // Load an image
-    auto input = cppflow::decode_jpeg(cppflow::read_file(std::string("ffvii.jpg"))); // 640x444
+    auto input = cppflow::decode_jpeg(cppflow::read_file(std::string("test.png"))); // 640x444
 
     // Cast it to float, normalize to range [0, 1], and add batch_dimension
     input = cppflow::cast(input, TF_UINT8, TF_FLOAT);
@@ -152,38 +153,44 @@ int main() {
     input = cppflow::expand_dims(input, 0);
 
     // From OpenCV (test)
-    // cv::Mat image = cv::imread("input.jpg");
-    // cppflow::tensor input_tensor = cppflow::tensor(image);
-    // input_tensor = input_tensor / 255.0f;
-    // input_tensor = cppflow::expand_dims(input_tensor, 0);
+    //cv::Mat image = cv::imread("input.jpg");
+    //cppflow::tensor input_tensor = cppflow::tensor(image);
+    //input_tensor = input_tensor / 255.0f;
+    //input_tensor = cppflow::expand_dims(input_tensor, 0);
 
     // Run
-    auto output = model({ {"serving_default_input_0:0", input} }, { "StatefulPartitionedCall:0" });
-    //auto output = model({ {"serving_default_input_0:0", input_tensor} }, { "StatefulPartitionedCall:0" });
+    try {
+        //auto output = model({ {"serving_default_input.1:0", input} }, { "PartitionedCall:0" }); // realesrgan-x4
+        auto output = model({ {"serving_default_input_0:0", input} }, { "StatefulPartitionedCall:0" }); // regular
+        //auto output = model({ {"serving_default_input_0:0", input_tensor} }, { "StatefulPartitionedCall:0" });
 
 
-    // Show the predicted class
-    std::cout << cppflow::arg_max(output[0], 1) << std::endl;
+        // Show the predicted class
+        std::cout << cppflow::arg_max(output[0], 1) << std::endl;
 
-    // Save it into an image    
-    auto output_tensor = output[0];
-    output_tensor = cppflow::cast(output_tensor, TF_FLOAT, TF_UINT8);
+        // Save it into an image    
+        auto output_tensor = output[0];
+        output_tensor = cppflow::cast(output_tensor, TF_FLOAT, TF_UINT8);
 
-    std::vector<float> output_data = output[0].get_data<float>();
-    // int rows = 444 * 4; // sonic
-    // int cols = 640 * 4;
-    int rows = 450 * 4; // ffvii
-    int cols = 800 * 4;
-    std::cout << output_data.size() << std::endl;
+        std::vector<float> output_data = output[0].get_data<float>();
+        // int rows = 444 * 4; // sonic
+        // int cols = 640 * 4;
+        int rows = 120 * 4; // ffvii
+        int cols = 125 * 4;
+        std::cout << output_data.size() << std::endl;
 
-    cv::Mat output_image_rgb(rows, cols, CV_32FC3, output_data.data());
-    cv::Mat output_image_bgr;
-    cv::cvtColor(output_image_rgb, output_image_bgr, cv::COLOR_RGB2BGR);
-    //output_image_bgr = output_image_bgr * 255.0f;
-    output_image_bgr.convertTo(output_image_bgr, CV_8UC3);
-    //convertScaleAbs(output_image_bgr, output_image_bgr);
-    //cv::Mat output_image = normalizeImage(output_image_bgr);
-    cv::imwrite("output.jpg", output_image_bgr);
+        cv::Mat output_image_rgb(rows, cols, CV_32FC3, output_data.data());
+        cv::Mat output_image_bgr;
+        cv::cvtColor(output_image_rgb, output_image_bgr, cv::COLOR_RGB2BGR);
+        //output_image_bgr = output_image_bgr * 255.0f;
+        output_image_bgr.convertTo(output_image_bgr, CV_8UC3);
+        //convertScaleAbs(output_image_bgr, output_image_bgr);
+        //cv::Mat output_image = normalizeImage(output_image_bgr);
+        cv::imwrite("output_test.png", output_image_bgr);
+    }
+    catch (const std::exception& e) {
+        std::cout << e.what() << std::endl;
+    }
 
     return 0;
 }
